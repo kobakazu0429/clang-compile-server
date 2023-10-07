@@ -28,6 +28,7 @@ const args = parseArgs({
     workers: {
       type: "string",
       short: "w",
+      default: os.cpus().length.toString(),
     },
   },
 });
@@ -51,22 +52,6 @@ server.get("/ping", async (request, reply) => {
   reply.send("pong");
 });
 
-const fib = (n: number): number => {
-  if (n === 0) {
-    return 0;
-  } else if (n === 1) {
-    return 1;
-  } else {
-    return fib(n - 1) + fib(n - 2);
-  }
-};
-
-server.get<{ Querystring: { num: number } }>("/fib", async (request, reply) => {
-  const { num } = request.query;
-  // console.log(num);
-  reply.send(fib(num));
-});
-
 const CODE = {
   OK: 0,
   ERROR: 10,
@@ -84,7 +69,7 @@ server.post<{ Body: { src: string } }>("/compile", async (request, reply) => {
       binary,
     });
   } catch (error: any) {
-    console.log(error);
+    request.log.debug(error);
     const message = error.stderr
       .trim()
       .replaceAll(
@@ -93,7 +78,7 @@ server.post<{ Body: { src: string } }>("/compile", async (request, reply) => {
       )
       .replaceAll(/[0-9A-Z]{26}\.c/g, "main.c");
 
-    console.log(message);
+    request.log.debug(message);
 
     reply.send({
       code: CODE.ERROR,
@@ -142,8 +127,7 @@ const compileToWasm = async (src: string) => {
 };
 
 const main = async () => {
-  // const CPUS = parseInt(args.values.workers,10) ?? os.cpus().length;
-  const CPUS = 4;
+  const CPUS = parseInt(args.values.workers!, 10);
   const master = () => {
     console.log("Total Number of Cores: %o", CPUS);
     console.log("Master %o is running", process.pid);
