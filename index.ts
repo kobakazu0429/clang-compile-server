@@ -4,7 +4,7 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import cluster from "node:cluster";
 import os from "node:os";
-import { execFile } from "node:child_process";
+import { exec } from "node:child_process";
 import { promisify, parseArgs } from "node:util";
 
 // const CLANG_PATH = process.env.WASI_SDK;
@@ -39,7 +39,7 @@ process.on("uncaughtException", (err) => {
   }
 });
 
-const pExec = promisify(execFile);
+const pExec = promisify(exec);
 
 const port = parseInt(args.values.port ?? "8080", 10);
 const logging = true;
