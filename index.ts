@@ -7,12 +7,6 @@ import os from "node:os";
 import { exec } from "node:child_process";
 import { promisify, parseArgs } from "node:util";
 
-// const CLANG_PATH = process.env.WASI_SDK;
-// const WASM_OPT_PATH = process.env.WASM_OPT;
-
-// if (!CLANG_PATH) throw new Error("CLANG_PATH not set");
-// if (!WASM_OPT_PATH) throw new Error("WASM_OPT_PATH not set");
-
 const args = parseArgs({
   options: {
     clang: {
