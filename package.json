@@ -1,0 +1,19 @@
+{
+  "name": "clang-compile-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "NODE_ENV=production node index.js"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "dependencies": {
+    "fastify": "^4.23.2",
+    "ulid": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.2",
+    "typescript": "^5.2.2"
+  }
+}
